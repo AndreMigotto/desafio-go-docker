@@ -1,0 +1,11 @@
+FROM golang:alpine AS builder
+
+WORKDIR /src/app
+
+COPY . .
+
+RUN go build -ldflags "-s -w" -o app
+
+FROM scratch
+COPY --from=builder /src/app .
+ENTRYPOINT ["/app"]
